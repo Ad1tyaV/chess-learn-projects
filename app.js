@@ -7,7 +7,20 @@ let stats = {squares:0,positions:0,openings:0,tactics:0};
 try { stats = {...stats,...JSON.parse(localStorage.getItem('chess-room-progress') || '{}')}; } catch {}
 function record(key) { stats[key]++; try {localStorage.setItem('chess-room-progress',JSON.stringify(stats));} catch {} }
 const nav = [['home','index.html','Practice'],['board','board.html','Board memory'],['openings','openings.html','Openings'],['tactics','tactics.html','Tactics']];
-document.querySelector('#app').innerHTML = `<header><a class="brand" href="index.html"><span aria-hidden="true">♞</span> Chess Room</a><nav aria-label="Main navigation">${nav.map(([key,url,label])=>`<a href="${url}" ${key===page?'class="active" aria-current="page"':''}>${label}</a>`).join('')}</nav></header><main id="main"></main><footer><span>A little practice. A clearer board.</span><span>Progress saved on this device</span></footer>`;
+document.querySelector('#app').innerHTML = `<header><a class="brand" href="index.html"><span aria-hidden="true">♞</span> Chess Room</a><nav aria-label="Main navigation">${nav.map(([key,url,label])=>`<a href="${url}" ${key===page?'class="active" aria-current="page"':''}>${label}</a>`).join('')}</nav><button class="theme-toggle" id="theme-toggle" type="button"></button></header><main id="main"></main><footer><span>A little practice. A clearer board.</span><span>Progress saved on this device</span></footer>`;
+const themeToggle = document.querySelector('#theme-toggle');
+function updateThemeToggle() {
+  const dark = document.documentElement.dataset.theme !== 'light';
+  themeToggle.textContent = dark ? '☀ Light mode' : '☾ Dark mode';
+  themeToggle.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+}
+themeToggle.onclick = () => {
+  const theme = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+  document.documentElement.dataset.theme = theme;
+  try { localStorage.setItem('chess-room-theme', theme); } catch {}
+  updateThemeToggle();
+};
+updateThemeToggle();
 const main = document.querySelector('#main');
 function initial() {const b={}; for(let i=0;i<8;i++){b[files[i]+'1']='RNBQKBNR'[i];b[files[i]+'2']='P';b[files[i]+'7']='p';b[files[i]+'8']='rnbqkbnr'[i];} return b;}
 function move(b,from,to){const p=b[from];delete b[from];b[to]=p;if(p?.toLowerCase()==='k' && Math.abs(files.indexOf(to[0])-files.indexOf(from[0]))===2){const rank=from[1],short=to[0]==='g';b[(short?'f':'d')+rank]=b[(short?'h':'a')+rank];delete b[(short?'h':'a')+rank];}}
