@@ -3,7 +3,7 @@
 A phone-friendly, buildless chess practice site with four separate pages:
 
 - **Practice**: overview and saved exercise counts.
-- **Board memory**: place pieces or recall arrangements with one, two, or three targets. Level 3 includes background pieces. Prompts, feedback, palette, and actions stay with the board on phones.
+- **Board memory**: move visible pieces or recall arrangements with one, two, or three targets. Every level includes background pieces; Level 3 adds more. Prompts, feedback, palette, and actions stay with the board on phones.
 - **Openings**: White repertoire (Italian Game, Ruy Lopez, Queen’s Gambit, London System) and Black repertoire (Sicilian, Caro-Kann, French, King’s Indian), with guided playback and rehearsal of your chosen side. Opponent replies are automatic; Black practice flips the board.
 - **Tactics**: three interactive starter puzzles, hints, and explanations.
 

@@ -9,6 +9,7 @@ function startBoardPractice() {
   const task = document.querySelector('#board-task');
   const actions = document.querySelector('#board-actions');
   const pieceSet = ['P','R','N','B','Q'];
+  const startingSquares = {P:'e2',R:'a1',N:'b1',B:'c1',Q:'d1'};
   const levelButtons = document.querySelectorAll('[data-level]');
   function action(label, handler, primary = false) {
     const button = document.createElement('button');
@@ -16,23 +17,24 @@ function startBoardPractice() {
     button.onclick = handler; actions.append(button); return button;
   }
   function makeTargets() {
-    const squares = [...files].flatMap(f => [2,3,4,5,6,7].map(r=>f+r));
+    const squares = [...files].flatMap(f => [2,3,4,5,6].map(r=>f+r)).filter(sq=>!Object.values(startingSquares).includes(sq));
     const pieces = [...pieceSet];
-    return Array.from({length:level},()=>({piece:pieces.splice(Math.floor(Math.random()*pieces.length),1)[0],square:squares.splice(Math.floor(Math.random()*squares.length),1)[0]}));
+    return Array.from({length:level},()=>{const piece=pieces.splice(Math.floor(Math.random()*pieces.length),1)[0];return {piece,source:startingSquares[piece],square:squares.splice(Math.floor(Math.random()*squares.length),1)[0]};});
   }
   function placementPrompt() {
     const t = targets[current];
-    task.innerHTML = `<div class="task-row"><span class="task-piece piece white" aria-hidden="true">${symbols[t.piece]}</span><strong>Place ${names[t.piece.toLowerCase()]} on ${t.square}</strong><span class="step-count">${current+1}/${level}</span></div><div class="target-list">${targets.map((t,i)=>`<span class="${i<current?'complete':i===current?'current':''}">${names[t.piece.toLowerCase()]} → ${t.square}${i<current?' ✓':''}</span>`).join('')}</div>`;
+    selected = t.source;
+    task.innerHTML = `<div class="task-row"><span class="task-piece piece white" aria-hidden="true">${symbols[t.piece]}</span><strong>Move ${names[t.piece.toLowerCase()]} to ${t.square}</strong><span class="step-count">${current+1}/${level}</span></div><div class="target-list">${targets.map((t,i)=>`<span class="${i<current?'complete':i===current?'current':''}">${names[t.piece.toLowerCase()]} → ${t.square}${i<current?' ✓':''}</span>`).join('')}</div>`;
   }
   function nextRound() {
     clearTimeout(timer); targets = makeTargets(); current = 0; selected = null; marked = []; actions.innerHTML = ''; feedback('');
-    background = level === 3 ? {g1:'K',g8:'k',a7:'p',b7:'p'} : {};
+    background = {g1:'K',g8:'k',a7:'p',b7:'p',...(level===3?{f7:'p',g7:'p',h7:'p'}:{})};
     for (const t of targets) delete background[t.square];
     position = {...background};
     document.querySelector('#exercise-title').textContent = mode === 'place' ? 'Place the pieces' : 'Remember the pieces';
-    document.querySelector('#instructions').textContent = mode === 'place' ? 'Tap each requested square. The piece appears there, then the next prompt follows. Level 3 adds background pieces.' : 'Study the highlighted pieces, then rebuild their positions. Background pieces stay on the board at Level 3.';
+    document.querySelector('#instructions').textContent = mode === 'place' ? 'The highlighted piece is ready to move. Tap its requested destination. Each level starts with pieces on the board; Level 3 adds more background pieces.' : 'Study the highlighted pieces, then rebuild their positions. Background pieces stay on the board at every level.';
     if (mode === 'place') {
-      phase = 'place'; placementPrompt(); action('New round', nextRound); renderBoard();
+      phase = 'place'; for(const t of targets)position[t.source]=t.piece; placementPrompt(); action('New round', nextRound); renderBoard();
     } else study();
   }
   function study() {
@@ -61,9 +63,10 @@ function startBoardPractice() {
   clickable = sq => {
     if (phase === 'place') {
       const t = targets[current];
+      if(sq===t.source){feedback(`Tap ${t.square} to move the highlighted ${names[t.piece.toLowerCase()]}.`);return;}
       if(sq!==t.square){feedback(`That’s ${sq}. Find ${t.square}.`);return;}
-      position[sq] = t.piece; marked.push(sq); current++; record('squares');
-      if(current===targets.length){phase='done';task.innerHTML=`<strong>Round complete ✓</strong><span class="task-detail">${targets.map(t=>`${names[t.piece.toLowerCase()]} on ${t.square}`).join(' · ')}</span>`;feedback('All squares found!',true);actions.innerHTML='';action('Next round',nextRound,true);}
+      delete position[t.source]; position[sq] = t.piece; marked.push(sq); current++; record('squares');
+      if(current===targets.length){phase='done';selected=null;task.innerHTML=`<strong>Round complete ✓</strong><span class="task-detail">${targets.map(t=>`${names[t.piece.toLowerCase()]} on ${t.square}`).join(' · ')}</span>`;feedback('All squares found!',true);actions.innerHTML='';action('Next round',nextRound,true);}
       else {placementPrompt();feedback('Correct — place the next piece.',true);}
       renderBoard();
     } else if (phase === 'recall') {
