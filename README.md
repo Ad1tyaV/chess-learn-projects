@@ -3,8 +3,8 @@
 A phone-friendly, buildless chess practice site with four separate pages:
 
 - **Practice**: overview and saved exercise counts.
-- **Board memory**: square-name drills and reconstructing 3–7 piece arrangements.
-- **Openings**: Italian Game, Ruy Lopez, Queen’s Gambit, and Sicilian Defense, with guided playback and memory rehearsal.
+- **Board memory**: place pieces or recall arrangements with one, two, or three targets. Level 3 includes background pieces. Prompts, feedback, palette, and actions stay with the board on phones.
+- **Openings**: White repertoire (Italian Game, Ruy Lopez, Queen’s Gambit, London System) and Black repertoire (Sicilian, Caro-Kann, French, King’s Indian), with guided playback and rehearsal of your chosen side. Opponent replies are automatic; Black practice flips the board.
 - **Tactics**: three interactive starter puzzles, hints, and explanations.
 
 Progress is stored in the current browser’s local storage. It does not sync across devices. Position memory uses arrangements rather than legal game positions. Opening and tactics exercises use curated moves, not a general chess engine.
@@ -26,4 +26,4 @@ All links and assets are relative, so the site supports GitHub Pages repository 
 
 ## Extend the exercises
 
-Edit `openings` and `puzzles` in `app.js` to add curated lines or tactics. Square names use algebraic coordinates; uppercase piece letters are White and lowercase letters are Black.
+Edit `openings` and `puzzles` in `app.js` to add curated lines or tactics. Square names use algebraic coordinates; uppercase piece letters are White and lowercase letters are Black. `board-practice.js` and `openings-practice.js` contain their respective practice flows.

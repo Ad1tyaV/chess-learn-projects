@@ -13,3 +13,42 @@ nav a.active,.button,button.primary,.controls button.active{background:var(--act
 .theme-toggle:focus-visible,a:focus-visible,button:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 @media(max-width:850px) and (min-width:701px){header{flex-wrap:wrap}nav{order:3;width:100%;justify-content:center}}
 @media(max-width:700px){header{display:grid;grid-template-columns:1fr auto;gap:16px 8px}.brand{margin-bottom:0}nav{grid-column:1 / -1;grid-row:2}.theme-toggle{grid-column:2;grid-row:1;padding:10px 12px}}
+/* Keep the question, answer controls, and board in one phone-sized practice area. */
+.practice-top{max-width:540px;margin-bottom:18px}
+.practice-top .controls{margin:0 0 10px;display:flex}
+.mode-controls button{flex:1;min-height:44px}
+.level-controls{display:flex;gap:6px}
+.level-controls button{flex:1;min-height:44px;border:1px solid var(--line);border-radius:8px;background:var(--white);color:var(--muted);padding:8px;font-size:12px}
+.level-controls button.active{background:var(--soft);color:var(--ink);border-color:var(--accent)}
+.board-task{min-height:65px;background:var(--white);padding:12px 14px;border:1px solid var(--line);border-radius:10px 10px 0 0;display:flex;flex-direction:column;justify-content:center;gap:5px;font-size:16px}
+.task-row{display:flex;align-items:center;gap:10px}
+.task-piece.piece{font-size:30px;background:#7e9a7b;border-radius:6px;min-width:34px;text-align:center;padding:2px}
+.step-count{font-size:11px;color:var(--muted);margin-left:auto;white-space:nowrap}
+.task-detail{font-size:12px;color:var(--muted);line-height:1.5}
+.target-list{display:flex;gap:10px;flex-wrap:wrap;font-size:11px;color:var(--muted)}
+.target-list .current{color:var(--ink)}.target-list .complete{color:var(--success)}
+.board-feedback{background:var(--white);padding:0 14px 9px;min-height:29px;color:var(--muted);font-size:12px;line-height:1.5;border-left:1px solid var(--line);border-right:1px solid var(--line)}
+.board-feedback.success{color:var(--success)}
+.board-actions{display:flex;gap:8px;margin-top:10px}
+.board-actions button{flex:1;min-height:44px;padding:10px 8px;font-size:12px}
+.board-task .palette{margin-top:3px}.board-task .palette button{min-width:44px;min-height:44px}.board-task .palette .eraser{font-size:22px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:700px){
+ body:not([data-page="home"]) header{padding:10px 14px;gap:8px}
+ body:not([data-page="home"]) .brand{font-size:18px}
+ body:not([data-page="home"]) .brand span{font-size:27px}
+ body:not([data-page="home"]) main{padding:16px 14px 32px}
+ .practice-head{margin-bottom:14px}.practice-head .eyebrow{display:none}.practice-head h1{font-family:'DM Sans',system-ui,sans-serif;font-size:22px;letter-spacing:-.4px;margin:0}.practice-head>p{display:none}
+ .practice-top{margin-bottom:12px}.practice-top .controls{margin-bottom:8px}
+ .workspace{gap:16px}.board-meta{margin:8px 0}.board-meta .secondary{min-height:36px;padding:7px 12px}
+ .board-task{padding:10px 12px;min-height:62px}.board-feedback{padding:0 12px 7px;min-height:26px}
+ .board-actions{margin-top:8px}.practice-help{padding:18px}.practice-help h2{font-size:23px}.practice-help p{margin-bottom:14px}
+ .opening-picker select{min-height:44px;padding:10px}
+ .task-row strong{font-size:15px}
+}
+@media(max-height:700px) and (max-width:700px){
+ body:not([data-page="home"]) .practice-head{display:none}
+ body:not([data-page="home"]) main{padding-top:10px}
+ .board-wrap{max-width:min(100%,calc(100svh - 320px));margin:0 auto}
+ body[data-page="openings"] .board-wrap{max-width:min(100%,calc(100svh - 310px))}
+}
